@@ -28,7 +28,7 @@ def main():
     youtube = googleapiclient.discovery.build(
         api_service_name, api_version, credentials=credentials)
 
-    request = youtube.channels().list(
+    request = youtube.videos().list(
         
     )
     response = request.execute()
