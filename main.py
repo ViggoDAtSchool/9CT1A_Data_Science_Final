@@ -5,7 +5,9 @@
 # https://developers.google.com/explorer-help/code-samples#python
 
 import os
-
+import json as js
+import pandas as pd
+import matplotlib as mlp
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
@@ -29,11 +31,16 @@ def main():
         api_service_name, api_version, credentials=credentials)
 
     request = youtube.videos().list(
-        
-    )
+        part="snippet,contentDetails,statistics",
+        chart="mostPopular",
+        maxResults=100
+        )
     response = request.execute()
-
     print(response)
+    response = js.dumps(response)
+    response = pd.json_normalize(response, 'data')
+    data=pd.DataFrame(response)
+    print(data)
 
 if __name__ == "__main__":
     main()
