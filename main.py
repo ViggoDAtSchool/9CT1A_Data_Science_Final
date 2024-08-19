@@ -35,12 +35,14 @@ def main():
         chart="mostPopular",
         maxResults=100
         )
+    global data
+    data = []
     response = request.execute()
-    print(response)
     response = js.dumps(response)
-    response = pd.json_normalize(response, 'data')
-    data=pd.DataFrame(response)
-    print(data)
+    response = js.loads(response)
+    data.append(pd.DataFrame([response]))
+    data = pd.concat(data, ignore_index=False, sort=True)
 
 if __name__ == "__main__":
     main()
+    data.to_csv('data.csv', index=False)
