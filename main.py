@@ -21,7 +21,7 @@ def main():
 
     api_service_name = "youtube"
     api_version = "v3"
-    client_secrets_file = "C:/Users/viggo.drygajlo/Documents/9CT1A_Data_Science_Final/mysecretfile.json"
+    client_secrets_file = "./mysecretfile.json"
 
     # Get credentials and create an API client
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
@@ -36,13 +36,21 @@ def main():
         maxResults=100
         )
     global data
-    data = []
+    #data = []
     response = request.execute()
-    response = js.dumps(response)
-    response = js.loads(response)
-    data.append(pd.DataFrame([response]))
-    data = pd.concat(data, ignore_index=False, sort=True)
+    its = response['items']
+    cols = {}
+    for i in its[0]: # Will error if something bad happens
+        if isinstance(its[0][i], str):
+            cols[i] = [j[i] for j in its]
+        else:
+            for k in its[0][i]:
+                cols[k] = [(None if k not in j[i] else j[i][k]) for j in its]
+    global data
+    data = pd.DataFrame(cols)
+    #data = pd.concat(data, ignore_index=False, sort=True)
 
 if __name__ == "__main__":
     main()
+    print(data)
     data.to_csv('data.csv', index=False)
