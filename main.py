@@ -84,17 +84,18 @@ if __name__ == "__main__":
                  4: Transfer the original DataFrame to a .csv file.
                  5: Exit the program.
                  """)
-    if choice == "1":
-        print(data)
-    elif choice == "2":
-        print(data_clean)
-    elif choice == "3":
-        x='viewCount'
-        y='likeCount'
-        plot(x,y)
-    elif choice == "4":
-        data.to_csv('data.csv', index=False)
-    elif choice == "5":
-        pass
-    else:
-        print("That is not a valid value, dummy.")
+    while True:
+        if choice == "1":
+            print(data)
+        elif choice == "2":
+            print(data_clean)
+        elif choice == "3":
+            x='viewCount'
+            y='likeCount'
+            plot(x,y)
+        elif choice == "4":
+            data.to_csv('data.csv', index=False)
+        elif choice == "5":
+            break
+        else:
+            print("That is not a valid value, dummy.")
